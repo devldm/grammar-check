@@ -6,6 +6,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import type { DiscordProfile } from "next-auth/providers/discord";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
 
@@ -54,6 +55,14 @@ export const authOptions: NextAuthOptions = {
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
+      authorization: { params: { scope: "identify" } },
+      profile(profile: DiscordProfile) {
+        return {
+          id: profile.id,
+          name: profile.username,
+          image: profile.image_url,
+        };
+      },
     }),
     KakaoProvider({
       clientId: env.KAKAO_CLIENT_ID,
