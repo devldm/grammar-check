@@ -1,7 +1,14 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
+import GridWithTitle from "~/components/GridWithTitle";
 import Nav from "~/components/Nav";
+import SignInOutButton from "~/components/SignInOutButton";
+import { UserDataCard } from "~/components/UserDataCard";
+import { api } from "~/utils/api";
 
 export default function Profile() {
+  const { data: sessionData } = useSession();
+  const completed = api.challenges.getAll.useQuery();
   return (
     <>
       <Head>
@@ -10,8 +17,10 @@ export default function Profile() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Nav />
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#47567c] to-[#15162c] text-white">
-        Hello liam
+      <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#47567c] to-[#15162c] text-white">
+        <UserDataCard data={sessionData} />
+        <GridWithTitle title={"Completed challenges"} data={completed.data} />
+        <SignInOutButton data={sessionData} />
       </main>
     </>
   );

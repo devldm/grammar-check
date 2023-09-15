@@ -13,11 +13,11 @@ export default function Nav() {
   return (
     <nav className="border-gray-200 bg-white dark:bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-        <a href="#" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
             GrammarCheck
           </span>
-        </a>
+        </Link>
         <button
           data-collapse-toggle="navbar-default"
           id="hamburger-button"
@@ -36,8 +36,8 @@ export default function Nav() {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               strokeWidth="2"
               d="M1 1h15M1 7h15M1 13h15"
             />

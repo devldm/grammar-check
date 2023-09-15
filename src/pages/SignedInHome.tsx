@@ -1,9 +1,25 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import { type FormEvent, useState } from "react";
 
 import { api } from "~/utils/api";
 
 export default function SignedInHome() {
+  const [answerState, setAnswerState] = useState("");
+  const mutation = api.challenges.postChallenge.useMutation();
+  const grammarQuery = api.challenges.getGrammar.useQuery();
+
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    console.log(answerState);
+    console.log(grammarQuery.data?.id);
+    grammarQuery.data?.id &&
+      mutation.mutate({
+        solution: answerState,
+        grammarId: grammarQuery.data?.id,
+      });
+  }
   return (
     <>
       <Head>
@@ -13,9 +29,35 @@ export default function SignedInHome() {
       </Head>
       <main className=" flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#47567c] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Todays grammar is: 아무 <span className="text-blue-500">명</span>도
-          </h1>
+          <div className="w-full rounded-lg border-2 border-gray-200">
+            <div className="flex flex-col items-center gap-2 p-4">
+              <h1 className="text-center text-xl font-bold tracking-tight text-white sm:text-[5rem]">
+                todays grammar is:
+                {(
+                  <span className="block pt-6 text-5xl">
+                    {grammarQuery.data?.grammar}{" "}
+                  </span>
+                ) ?? "oops"}
+              </h1>
+              <br />
+              <form onSubmit={onSubmit} className="w-full">
+                <input
+                  type="text"
+                  name="answer"
+                  className="w-full rounded-lg border-2 border-gray-600 p-3"
+                  onChange={(e) => {
+                    setAnswerState(e?.target.value);
+                  }}
+                />
+                <button
+                  className="mt-3 block w-full rounded-lg bg-blue-300 p-3"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
           <div className="flex flex-col items-center gap-2">
             <AuthShowcase />
           </div>

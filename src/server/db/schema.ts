@@ -44,6 +44,25 @@ export const users = mysqlTable("user", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  solutions: many(solutions),
+}));
+
+export const solutions = mysqlTable("solutions", {
+  id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+  solution: text("solution").notNull(),
+  submittedUserId: varchar("submittedUserId", { length: 255 }).notNull(),
+  grammarId: int("grammarId").notNull(),
+});
+
+export const solutionsRelations = relations(solutions, ({ many, one }) => ({
+  user: one(users, {
+    fields: [solutions.submittedUserId],
+    references: [users.id],
+  }),
+  grammar: one(grammar, {
+    fields: [solutions.grammarId],
+    references: [grammar.id],
+  }),
 }));
 
 export const accounts = mysqlTable(
