@@ -8,17 +8,24 @@ import {
 import { db } from "~/server/db";
 import { solutions } from "~/server/db/schema";
 
-type newSolutionSubmission = typeof solutions.$inferInsert;
+export type newSolutionSubmission = typeof solutions.$inferInsert;
 
 export const challengesRouter = createTRPCRouter({
   postChallenge: protectedProcedure
-    .input(z.object({ solution: z.string(), grammarId: z.number() }))
+    .input(
+      z.object({
+        solution: z.string(),
+        grammarId: z.number(),
+        grammar: z.string(),
+      }),
+    )
     .mutation(({ input, ctx }) => {
       const userId = ctx.session.user.id;
       const result = db.insert(solutions).values({
         solution: input.solution,
         submittedUserId: userId,
         grammarId: input.grammarId,
+        grammar: input.grammar,
       } as newSolutionSubmission);
 
       return result;

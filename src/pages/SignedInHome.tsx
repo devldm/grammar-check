@@ -12,12 +12,12 @@ export default function SignedInHome() {
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    console.log(answerState);
-    console.log(grammarQuery.data?.id);
     grammarQuery.data?.id &&
+      grammarQuery.data.grammar &&
       mutation.mutate({
         solution: answerState,
         grammarId: grammarQuery.data?.id,
+        grammar: grammarQuery.data?.grammar,
       });
   }
   return (

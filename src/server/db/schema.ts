@@ -52,6 +52,11 @@ export const solutions = mysqlTable("solutions", {
   solution: text("solution").notNull(),
   submittedUserId: varchar("submittedUserId", { length: 255 }).notNull(),
   grammarId: int("grammarId").notNull(),
+  grammar: varchar("grammar", { length: 256 }).notNull(),
+  solvedAt: timestamp("solvedAt", {
+    mode: "date",
+    fsp: 2,
+  }).default(sql`CURRENT_TIMESTAMP(2)`),
 });
 
 export const solutionsRelations = relations(solutions, ({ many, one }) => ({
@@ -59,9 +64,13 @@ export const solutionsRelations = relations(solutions, ({ many, one }) => ({
     fields: [solutions.submittedUserId],
     references: [users.id],
   }),
-  grammar: one(grammar, {
+  grammarId: one(grammar, {
     fields: [solutions.grammarId],
     references: [grammar.id],
+  }),
+  grammar: one(grammar, {
+    fields: [solutions.grammar],
+    references: [grammar.grammar],
   }),
 }));
 
