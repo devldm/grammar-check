@@ -18,7 +18,7 @@ export default function GridWithTitle({
               return (
                 <div
                   key={solution.id}
-                  className="rounded-lg border-2 border-gray-300 p-5"
+                  className="mb-2 mt-2 rounded-lg border-2 border-gray-300 p-5"
                 >
                   <p>{solution.grammar}</p>
                   <p>{solution.solution}</p>

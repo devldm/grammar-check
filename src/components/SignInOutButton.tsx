@@ -11,7 +11,7 @@ export default function SignInOutButton({ data }: { data: Session | null }) {
           : () =>
               void signIn(
                 "discord",
-                { callbackUrl: "/SignedInHome", redirect: true },
+                { callbackUrl: "/", redirect: true },
                 { prompt: "none" },
               )
       }
