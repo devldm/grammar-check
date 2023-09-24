@@ -19,7 +19,7 @@ export default function GrammarInput() {
   }
 
   return (
-    <div className="w-full max-w-[900px] rounded-lg border-2 border-gray-200">
+    <div className="w-full max-w-[900px] rounded-lg border-gray-200 md:border-2">
       <div className="flex flex-col items-center gap-2 p-4">
         {/* <h1 className="text-center text-xl font-bold tracking-tight text-white sm:text-[5rem] md:text-xl">
             todays grammar is:
@@ -39,7 +39,7 @@ export default function GrammarInput() {
             }}
           />
           <button
-            className="mt-3 block w-full rounded-lg bg-blue-300 p-3"
+            className="mt-3 block w-full rounded-lg bg-blue-300 p-3 text-black"
             type="submit"
           >
             Submit

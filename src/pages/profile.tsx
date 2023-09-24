@@ -8,7 +8,7 @@ import { api } from "~/utils/api";
 
 export default function Profile() {
   const { data: sessionData } = useSession();
-  const completed = api.challenges.getAll.useQuery();
+  const completed = api.challenges.getAllSubmitted.useQuery();
   return (
     <>
       <Head>
@@ -17,7 +17,7 @@ export default function Profile() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Nav />
-      <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#47567c] to-[#15162c] text-white">
+      <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#47567c] to-[#15162c] p-4 text-white">
         <UserDataCard data={sessionData} />
         {completed.data && (
           <GridWithTitle title={"Completed challenges"} data={completed.data} />

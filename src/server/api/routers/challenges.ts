@@ -35,11 +35,15 @@ export const challengesRouter = createTRPCRouter({
     return ctx.db.query.grammar.findFirst();
   }),
 
-  getAll: protectedProcedure.query(({ ctx }) => {
+  getAllSubmitted: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.solutions.findMany({
       where: (solutions, { eq }) =>
         eq(solutions.submittedUserId, ctx.session.user.id),
     });
+  }),
+
+  getAll: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.query.solutions.findMany();
   }),
 
   getSecretMessage: protectedProcedure.query(() => {

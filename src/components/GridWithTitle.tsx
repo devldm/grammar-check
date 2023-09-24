@@ -10,15 +10,15 @@ export default function GridWithTitle({
   data: newSolutionSubmission[];
 }) {
   return (
-    <div className="w-full p-6">
-      <h1 className="text-2xl">{title}</h1>
-      <div>
+    <div className="w-full p-2">
+      <h1 className="mb-4 text-2xl">{title}</h1>
+      <div className="flex flex-col gap-3 md:flex md:flex-wrap md:gap-4">
         {data
           ? data.map((solution) => {
               return (
                 <div
                   key={solution.id}
-                  className="mb-2 mt-2 rounded-lg border-2 border-gray-300 p-5"
+                  className="rounded-lg border-2 border-gray-300 p-5 md:min-w-[300px] md:max-w-[350px]"
                 >
                   <p>{solution.grammar}</p>
                   <p>{solution.solution}</p>
