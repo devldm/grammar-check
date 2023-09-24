@@ -19,7 +19,9 @@ export default function Profile() {
       <Nav />
       <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#47567c] to-[#15162c] text-white">
         <UserDataCard data={sessionData} />
-        <GridWithTitle title={"Completed challenges"} data={completed.data} />
+        {completed.data && (
+          <GridWithTitle title={"Completed challenges"} data={completed.data} />
+        )}
         <SignInOutButton data={sessionData} />
       </main>
     </>

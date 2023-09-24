@@ -3,12 +3,10 @@ import Head from "next/head";
 import Nav from "~/components/Nav";
 import SignInOutButton from "~/components/SignInOutButton";
 
-import { api } from "~/utils/api";
 import SignedInHome from "./SignedInHome";
 
 export default function Home() {
   const { data: sessionData } = useSession();
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>
