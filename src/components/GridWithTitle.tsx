@@ -1,12 +1,10 @@
 import type { newSolutionSubmission } from "~/server/api/routers/challenges";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function GridWithTitle({
   title,
   data,
 }: {
   title: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: newSolutionSubmission[];
 }) {
   return (

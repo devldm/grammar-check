@@ -19,7 +19,9 @@ export default function SignedInHome() {
       <main className="flex min-h-screen w-full flex-col items-center  bg-gradient-to-b from-[#47567c] to-[#15162c] text-white">
         <div className="container flex flex-col items-center justify-center gap-4">
           <GrammarInput />
-          <GridWithTitle title="Solutions" data={completed.data} />
+          {completed.data ? (
+            <GridWithTitle title="Solutions" data={completed.data} />
+          ) : null}
           <div className="flex flex-col items-center gap-2">
             <SignInOutButton data={sessionData} />
           </div>

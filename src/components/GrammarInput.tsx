@@ -21,9 +21,6 @@ export default function GrammarInput() {
   return (
     <div className="w-full max-w-[900px] rounded-lg border-gray-200 md:border-2">
       <div className="flex flex-col items-center gap-2 p-4">
-        {/* <h1 className="text-center text-xl font-bold tracking-tight text-white sm:text-[5rem] md:text-xl">
-            todays grammar is:
-          </h1> */}
         {(
           <span className="mt-4 block max-w-full text-3xl text-white md:text-4xl">
             {grammarQuery.data?.grammar}{" "}
