@@ -1,12 +1,9 @@
-# Create T3 App
+# GrammarCheck
+
+Welcome to GrammarCheck's repo. This is an in progress project built to showcase my skills whilst hopefully helping myself and others practice Korean in the future.
+## Tech Stack
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
-
-## What's next? How do I make an app with this?
-
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
-
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
@@ -14,15 +11,16 @@ If you are not familiar with the different technologies used in this project, pl
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
 
-## Learn More
+## Current state
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+ The app can handle logins, store and fetch data from multiple tables within a hosted database and allows users to submit grammar challenges which can be viewed on the wall or in their profile.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Next Steps
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+There is still a lot to add including
 
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- Ability to visit other peoples profiles
+- Adding sorting to solved challenges and the wall
+- allowing users to set language levels in profile
+- adding sign in options like Kakao or Naver (Currently only discord)
+- Even more!
