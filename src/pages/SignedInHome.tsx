@@ -1,5 +1,7 @@
+import { Query } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import GrammarInput from "~/components/GrammarInput";
 import GridWithTitle from "~/components/GridWithTitle";
 import SignInOutButton from "~/components/SignInOutButton";
@@ -7,7 +9,31 @@ import { api } from "~/utils/api";
 
 export default function SignedInHome() {
   const { data: sessionData } = useSession();
+  const [completedState, setCompletedState] = useState({
+    grammar: "",
+    id: 0,
+    solution: "",
+    submittedUserId: "",
+    grammarId: 10,
+    solvedAt: new Date(),
+  });
   const completed = api.challenges.getAll.useQuery();
+
+  const { isLoading, isError, isSuccess, data, error } =
+    api.challenges.getGrammar.useQuery();
+  const [grammarState, setGrammarState] = useState({
+    id: 0,
+    name: "",
+  });
+
+  useEffect(() => {
+    if (data?.id && data?.grammar) {
+      setGrammarState({
+        id: data?.id,
+        name: data.grammar,
+      });
+    }
+  }, [isSuccess, data]);
 
   return (
     <>
@@ -18,7 +44,7 @@ export default function SignedInHome() {
       </Head>
       <main className="flex min-h-screen w-full flex-col items-center  bg-gradient-to-b from-[#47567c] to-[#15162c] text-white ">
         <div className="container flex max-w-[900px] flex-col items-center justify-center gap-4">
-          <GrammarInput />
+          {data ? <GrammarInput grammar={data} /> : null}
           {completed.data ? (
             <GridWithTitle title="Solutions" data={completed.data} />
           ) : null}

@@ -24,7 +24,7 @@ export const grammar = mysqlTable(
   "grammar",
   {
     id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-    grammar: varchar("name", { length: 256 }),
+    grammar: varchar("name", { length: 256 }).notNull(),
   },
   (grammar) => ({
     nameIndex: uniqueIndex("grammar_idx").on(grammar.grammar),

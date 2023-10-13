@@ -1,36 +1,39 @@
 import { type FormEvent, useState } from "react";
 import { api } from "~/utils/api";
+import { type grammarType } from "types/grammar";
 
-export default function GrammarInput() {
+export default function GrammarInput({ grammar }: { grammar: grammarType }) {
   const [answerState, setAnswerState] = useState("");
   const mutation = api.challenges.postChallenge.useMutation();
-  const grammarQuery = api.challenges.getGrammar.useQuery();
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    grammarQuery.data?.id &&
-      grammarQuery.data.grammar &&
+    if (grammar) {
       mutation.mutate({
         solution: answerState,
-        grammarId: grammarQuery.data?.id,
-        grammar: grammarQuery.data?.grammar,
+        grammarId: grammar.id,
+        grammar: grammar.grammar,
       });
+    }
+
+    setAnswerState("");
   }
 
   return (
-    <div className="w-full max-w-[900px] rounded-lg border-gray-200 md:border-2">
+    <div className="w-full max-w-[900px] rounded-lg border-gray-200 md:mt-6 md:border-2">
       <div className="flex flex-col items-center gap-2 p-4">
         {(
           <span className="mt-4 block max-w-full text-3xl text-white md:text-4xl">
-            {grammarQuery.data?.grammar}{" "}
+            {grammar.grammar}{" "}
           </span>
         ) ?? "oops"}
         <br />
-        <form onSubmit={onSubmit} className="w-full">
+        <form onSubmit={onSubmit} className="w-full" id="grammar-form">
           <textarea
             name="answer"
-            className="w-full rounded-lg border-2 border-gray-600 p-3"
+            className="w-full rounded-lg border-2 border-gray-600 p-3 text-black"
+            value={answerState}
             onChange={(e) => {
               setAnswerState(e?.target.value);
             }}
