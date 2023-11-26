@@ -24,7 +24,7 @@ export const grammar = mysqlTable(
   "grammar",
   {
     id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-    grammar: varchar("name", { length: 256 }).notNull(),
+    grammar: varchar("grammar", { length: 256 }).notNull(),
   },
   (grammar) => ({
     nameIndex: uniqueIndex("grammar_idx").on(grammar.grammar),
@@ -33,7 +33,7 @@ export const grammar = mysqlTable(
 
 export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  name: varchar("name", { length: 255 }),
+  name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
@@ -57,6 +57,7 @@ export const solutions = mysqlTable("solutions", {
     mode: "date",
     fsp: 2,
   }).default(sql`CURRENT_TIMESTAMP(2)`),
+  likeCount: int("likeCount").default(0),
 });
 
 export const solutionsRelations = relations(solutions, ({ many, one }) => ({
@@ -73,6 +74,33 @@ export const solutionsRelations = relations(solutions, ({ many, one }) => ({
     references: [grammar.grammar],
   }),
 }));
+
+export const solutionComments = mysqlTable("solutionComments", {
+  commentId: bigint("commentId", { mode: "number" })
+    .primaryKey()
+    .autoincrement(),
+  solutionId: bigint("solutionId", { mode: "number" }).notNull(),
+  comment: text("comment").notNull(),
+  commentingUserId: varchar("commentingUserId", { length: 255 }).notNull(),
+  createdAt: timestamp("createdAt", {
+    mode: "date",
+    fsp: 2,
+  }).default(sql`CURRENT_TIMESTAMP(2)`),
+});
+
+export const solutionCommentsRelations = relations(
+  solutionComments,
+  ({ one }) => ({
+    solutionId: one(solutions, {
+      fields: [solutionComments.solutionId],
+      references: [solutions.id],
+    }),
+    commentingUser: one(users, {
+      fields: [solutionComments.commentingUserId],
+      references: [users.id],
+    }),
+  }),
+);
 
 export const accounts = mysqlTable(
   "account",

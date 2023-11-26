@@ -2,9 +2,10 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
-import { solutions } from "~/server/db/schema";
+import { solutionComments, solutions } from "~/server/db/schema";
 
 export type newSolutionSubmission = typeof solutions.$inferInsert;
+export type newCommentSubmission = typeof solutionComments.$inferInsert;
 
 export const challengesRouter = createTRPCRouter({
   postChallenge: protectedProcedure
@@ -58,4 +59,30 @@ export const challengesRouter = createTRPCRouter({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
+
+  getSolutionComments: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.query.solutionComments.findMany({
+        where: (comments, { eq }) => eq(comments.solutionId, input.id),
+      });
+    }),
+
+  postComment: protectedProcedure
+    .input(
+      z.object({
+        comment: z.string(),
+        solutionId: z.number(),
+      }),
+    )
+    .mutation(({ input, ctx }) => {
+      const userId = ctx.session.user.id;
+      const result = db.insert(solutionComments).values({
+        solutionId: input.solutionId,
+        comment: input.comment,
+        commentingUserId: userId,
+      } as newCommentSubmission);
+
+      return result;
+    }),
 });

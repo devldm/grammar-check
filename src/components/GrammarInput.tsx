@@ -49,6 +49,7 @@ export default function GrammarInput({ grammar }: { grammar: grammarType }) {
             onChange={(e) => {
               setAnswerState(e?.target.value);
             }}
+            required
           />
           <button
             className="mt-3 block w-full rounded-lg bg-blue-300 p-3 text-black hover:bg-blue-400 md:w-[50%]"
