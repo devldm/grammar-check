@@ -12,7 +12,7 @@ export default function GridWithTitle({
     <div className="w-full p-2">
       <h1 className="mb-4 text-4xl">{title}</h1>
       <Spacer height="h-4" />
-      <div className="flex flex-col gap-3 md:flex md:flex-row md:flex-wrap md:gap-4">
+      <div className="flex flex-col justify-center gap-3 md:flex md:flex-row md:flex-wrap md:gap-4">
         {data
           ? data.map((solution) => {
               return (

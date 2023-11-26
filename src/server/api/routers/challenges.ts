@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
 import { solutions } from "~/server/db/schema";
 
@@ -35,7 +31,20 @@ export const challengesRouter = createTRPCRouter({
     return ctx.db.query.grammar.findFirst();
   }),
 
-  getAllSubmitted: protectedProcedure.query(({ ctx }) => {
+  getGrammarHasBeenCompleted: protectedProcedure
+    .input(z.object({ grammarId: z.number() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.query.solutions.findFirst({
+        where: (solutions, { eq }) => {
+          return (
+            eq(solutions.submittedUserId, ctx.session.user.id) &&
+            eq(solutions.grammarId, input.grammarId)
+          );
+        },
+      });
+    }),
+
+  getAllSubmittedByUser: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.solutions.findMany({
       where: (solutions, { eq }) =>
         eq(solutions.submittedUserId, ctx.session.user.id),

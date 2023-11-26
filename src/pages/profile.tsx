@@ -9,7 +9,8 @@ import { api } from "~/utils/api";
 
 export default function Profile() {
   const { data: sessionData } = useSession();
-  const completed = api.challenges.getAllSubmitted.useQuery();
+  const completedChallenges = api.challenges.getAllSubmittedByUser.useQuery();
+
   return (
     <>
       <Head>
@@ -22,10 +23,10 @@ export default function Profile() {
         <div className="xl:max-w-[60%]">
           <UserDataCard data={sessionData} />
           <Spacer height="h-8" />
-          {completed.data && (
+          {completedChallenges.data && (
             <GridWithTitle
               title={"Completed challenges"}
-              data={completed.data}
+              data={completedChallenges.data}
             />
           )}
           <SignInOutButton data={sessionData} />

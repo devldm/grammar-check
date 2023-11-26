@@ -1,4 +1,3 @@
-import { Query } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -9,31 +8,38 @@ import { api } from "~/utils/api";
 
 export default function SignedInHome() {
   const { data: sessionData } = useSession();
-  const [completedState, setCompletedState] = useState({
-    grammar: "",
-    id: 0,
-    solution: "",
-    submittedUserId: "",
-    grammarId: 10,
-    solvedAt: new Date(),
-  });
-  const completed = api.challenges.getAll.useQuery();
+  const completedChallenges = api.challenges.getAll.useQuery();
 
   const { isLoading, isError, isSuccess, data, error } =
     api.challenges.getGrammar.useQuery();
+
   const [grammarState, setGrammarState] = useState({
     id: 0,
     name: "",
   });
+  const [hasCompleted, setHasCompleted] = useState(false);
+  const hasUserCompletedGrammar = grammarState
+    ? api.challenges.getGrammarHasBeenCompleted.useQuery({
+        grammarId: grammarState.id,
+      })
+    : null;
 
   useEffect(() => {
-    if (data?.id && data?.grammar) {
+    if (!data) return;
+
+    if (data.id && data.grammar) {
       setGrammarState({
-        id: data?.id,
+        id: data.id,
         name: data.grammar,
       });
     }
   }, [isSuccess, data]);
+
+  useEffect(() => {
+    if (!hasUserCompletedGrammar) return;
+
+    setHasCompleted(Boolean(hasUserCompletedGrammar.data));
+  }, [setHasCompleted, grammarState, hasUserCompletedGrammar]);
 
   return (
     <>
@@ -43,10 +49,10 @@ export default function SignedInHome() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen w-full flex-col items-center  bg-gradient-to-b from-[#47567c] to-[#15162c] text-white ">
-        <div className="container flex max-w-[900px] flex-col items-center justify-center gap-4">
+        <div className="container flex min-h-screen max-w-[1400px] flex-col items-center justify-center gap-4">
           {data ? <GrammarInput grammar={data} /> : null}
-          {completed.data ? (
-            <GridWithTitle title="Solutions" data={completed.data} />
+          {completedChallenges.data && hasCompleted ? (
+            <GridWithTitle title="Solutions" data={completedChallenges.data} />
           ) : null}
           <div className="flex flex-col items-center gap-2">
             <SignInOutButton data={sessionData} />
