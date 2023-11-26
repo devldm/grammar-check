@@ -31,7 +31,10 @@ export default function SolutionCard({
       >
         Show comments
       </button>
-      {showModal && <Modal comments={comments.data} solutionId={solution.id} />}
+      {/* TODO: Remove reliance on non-null operator */}
+      {showModal && (
+        <Modal comments={comments.data!} solutionId={solution.id!} />
+      )}
     </div>
   );
 }
