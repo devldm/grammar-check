@@ -20,7 +20,7 @@ export default function Profile() {
       </Head>
       <Nav isSignedIn={Boolean(sessionData)} />
       <main className="flex min-h-screen flex-col items-center gap-8 bg-gradient-to-b from-[#47567c] to-[#15162c] p-4 text-white">
-        <div className="xl:max-w-[60%]">
+        <div className="max-w-max">
           <UserDataCard data={sessionData} />
           <Spacer height="h-8" />
           {completedChallenges.data && (

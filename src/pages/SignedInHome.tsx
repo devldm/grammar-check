@@ -49,7 +49,7 @@ export default function SignedInHome() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen w-full flex-col items-center  bg-gradient-to-b from-[#47567c] to-[#15162c] text-white ">
-        <div className="container flex min-h-screen max-w-[1400px] flex-col items-center justify-center gap-4">
+        <div className="container flex min-h-screen max-w-max flex-col items-center justify-center gap-4">
           {data ? <GrammarInput grammar={data} /> : null}
           {completedChallenges.data && hasCompleted ? (
             <GridWithTitle title="Solutions" data={completedChallenges.data} />

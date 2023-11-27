@@ -1,14 +1,19 @@
 import { useState } from "react";
 
 export default function useModal() {
-  const [showModal, setShowModal] = useState(false);
+  const [openModalId, setOpenModalId] = useState<number | null>(null);
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
+  const openModal = (id: number) => {
+    setOpenModalId(id);
+  };
+
+  const closeModal = () => {
+    setOpenModalId(null);
   };
 
   return {
-    showModal,
-    toggleModal,
+    openModalId,
+    openModal,
+    closeModal,
   };
 }

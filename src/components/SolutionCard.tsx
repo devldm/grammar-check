@@ -1,19 +1,32 @@
 import type { newSolutionSubmission } from "~/server/api/routers/challenges";
 import { api } from "~/utils/api";
 import Modal from "./Modal";
-import useModal from "~/hooks/useModal";
+import CommentIcon from "./icons/CommentIcon";
+import { useEffect, useState } from "react";
 
 export default function SolutionCard({
   solution,
   isInCommentModal,
+  openModalId,
+  openModal,
+  closeModal,
 }: {
   solution: newSolutionSubmission;
   isInCommentModal: boolean;
+  openModalId?: number;
+  openModal?: (id: number) => void;
+  closeModal?: () => void;
 }) {
-  const { toggleModal, showModal } = useModal();
   const comments = api.challenges.getSolutionComments.useQuery({
     id: solution.id!,
   });
+
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    setShowModal(openModalId === solution.id);
+  }, [openModalId, solution.id]);
+
   return (
     <div
       key={solution.id}
@@ -24,23 +37,29 @@ export default function SolutionCard({
       </p>
 
       <p className="text-lg font-bold">{solution.solution}</p>
-      <p className="">{solution.solvedAt?.toLocaleDateString()}</p>
-      {!isInCommentModal && !showModal && (
-        <button
-          onClick={() => {
-            toggleModal();
-          }}
-          className="rounded-xl bg-blue-300 p-3 text-black"
-        >
-          Show comments
-        </button>
-      )}
+      <div className="flex w-full justify-between">
+        <p className="">{solution.solvedAt?.toLocaleDateString()}</p>
+
+        {!isInCommentModal && openModal && (
+          <button
+            onClick={() => {
+              openModal(solution.id!);
+            }}
+            className="flex w-min gap-2 rounded-xl text-white"
+          >
+            <CommentIcon />{" "}
+            {comments.data && comments.data?.length > 0
+              ? comments.data?.length
+              : null}
+          </button>
+        )}
+      </div>
       {/* TODO: Remove reliance on non-null operator */}
       {showModal && (
         <Modal
           comments={comments.data!}
           solution={solution}
-          toggle={toggleModal}
+          closeModal={closeModal!}
         />
       )}
     </div>

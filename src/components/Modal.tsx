@@ -8,11 +8,11 @@ import CrossIcon from "./icons/CrossIcon";
 export default function Modal({
   comments,
   solution,
-  toggle,
+  closeModal,
 }: {
   comments: comments;
   solution: newSolutionSubmission;
-  toggle: () => void;
+  closeModal: () => void;
 }) {
   const [commentState, setCommentState] = useState("");
   const mutation = api.challenges.postComment.useMutation();
@@ -20,7 +20,7 @@ export default function Modal({
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (commentState) {
+    if (commentState && solution) {
       mutation.mutate({
         solutionId: solution.id!,
         comment: commentState,
@@ -42,9 +42,9 @@ export default function Modal({
   return (
     <div className="absolute left-1/2 top-1/2 flex max-h-[80%] w-[90%] -translate-x-1/2 -translate-y-1/2 flex-col justify-center gap-4 rounded-xl bg-[#121212] p-8 md:w-max">
       <button
-        className="w-min items-end rounded-xl p-1 text-white"
+        className="w-min items-end rounded-xl p-1 text-white hover:cursor-pointer"
         onClick={() => {
-          toggle();
+          closeModal();
         }}
       >
         <CrossIcon />
