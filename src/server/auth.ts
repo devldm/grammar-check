@@ -64,14 +64,14 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
-    KakaoProvider({
+    /*KakaoProvider({
       clientId: env.KAKAO_CLIENT_ID,
       clientSecret: env.KAKAO_CLIENT_SECRET,
     }),
     NaverProvider({
       clientId: env.NAVER_CLIENT_ID,
       clientSecret: env.NAVER_CLIENT_SECRET,
-    }),
+    }),*/
 
     /**
      * ...add more providers here.
