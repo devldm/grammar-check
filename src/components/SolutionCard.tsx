@@ -30,7 +30,9 @@ export default function SolutionCard({
   return (
     <div
       key={solution.id}
-      className="flex flex-col justify-between gap-3 rounded-lg border-2 border-gray-300 p-5 md:w-[calc(700px_/_2)]"
+      className={`flex flex-col  justify-between gap-3 rounded-lg border-2 border-gray-300 p-5 ${
+        isInCommentModal ? `w-full md:w-[60%]` : ``
+      }`}
     >
       <p className="max-w-max rounded-lg border-2 border-slate-500 bg-slate-800 p-2">
         {solution.grammar}

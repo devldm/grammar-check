@@ -21,7 +21,12 @@ export default function Profile() {
       <Nav isSignedIn={Boolean(sessionData)} />
       <main className="flex min-h-screen flex-col items-center gap-8 bg-gradient-to-b from-[#47567c] to-[#15162c] p-4 text-white">
         <div className="max-w-max">
-          <UserDataCard data={sessionData} />
+          <div className="flex flex-row items-center">
+            <UserDataCard data={sessionData} />
+            <div className="shrink-0">
+              <SignInOutButton data={sessionData} />
+            </div>
+          </div>
           <Spacer height="h-8" />
           {completedChallenges.data && (
             <GridWithTitle
@@ -29,7 +34,6 @@ export default function Profile() {
               data={completedChallenges.data}
             />
           )}
-          <SignInOutButton data={sessionData} />
         </div>
       </main>
     </>

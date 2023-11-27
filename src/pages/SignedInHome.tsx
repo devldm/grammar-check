@@ -3,11 +3,9 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import GrammarInput from "~/components/GrammarInput";
 import GridWithTitle from "~/components/GridWithTitle";
-import SignInOutButton from "~/components/SignInOutButton";
 import { api } from "~/utils/api";
 
 export default function SignedInHome() {
-  const { data: sessionData } = useSession();
   const completedChallenges = api.challenges.getAll.useQuery();
 
   const { isLoading, isError, isSuccess, data, error } =
@@ -54,9 +52,6 @@ export default function SignedInHome() {
           {completedChallenges.data && hasCompleted ? (
             <GridWithTitle title="Solutions" data={completedChallenges.data} />
           ) : null}
-          <div className="flex flex-col items-center gap-2">
-            <SignInOutButton data={sessionData} />
-          </div>
         </div>
       </main>
     </>
