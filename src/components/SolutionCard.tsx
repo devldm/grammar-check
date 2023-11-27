@@ -5,8 +5,10 @@ import Modal from "./Modal";
 
 export default function SolutionCard({
   solution,
+  isInCommentModal,
 }: {
   solution: newSolutionSubmission;
+  isInCommentModal: boolean;
 }) {
   const [showModal, setShowModal] = useState(false);
   const comments = api.challenges.getSolutionComments.useQuery({
@@ -25,15 +27,25 @@ export default function SolutionCard({
 
       <p className="text-lg font-bold">{solution.solution}</p>
       <p className="">{solution.solvedAt?.toLocaleDateString()}</p>
-      <button
-        onClick={() => setShowModal(!showModal)}
-        className="rounded-xl bg-blue-300 p-3 text-black"
-      >
-        Show comments
-      </button>
+      {!isInCommentModal && !showModal && (
+        <button
+          onClick={() => {
+            console.log(showModal);
+            if (showModal === false) setShowModal(true);
+            else return;
+          }}
+          className="rounded-xl bg-blue-300 p-3 text-black"
+        >
+          Show comments
+        </button>
+      )}
       {/* TODO: Remove reliance on non-null operator */}
       {showModal && (
-        <Modal comments={comments.data!} solutionId={solution.id!} />
+        <Modal
+          comments={comments.data!}
+          solution={solution}
+          setShowModalState={setShowModal}
+        />
       )}
     </div>
   );

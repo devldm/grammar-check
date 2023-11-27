@@ -1,13 +1,24 @@
-import { type FormEvent, useEffect, useState } from "react";
+import {
+  type FormEvent,
+  useEffect,
+  useState,
+  type SetStateAction,
+  type Dispatch,
+} from "react";
 import { type comments } from "types/grammar";
 import { api } from "~/utils/api";
+import SolutionCard from "./SolutionCard";
+import { type newSolutionSubmission } from "~/server/api/routers/challenges";
+import CrossIcon from "./icons/CrossIcon";
 
 export default function Modal({
   comments,
-  solutionId,
+  solution,
+  setShowModalState,
 }: {
   comments: comments;
-  solutionId: number;
+  solution: newSolutionSubmission;
+  setShowModalState: Dispatch<SetStateAction<boolean>>;
 }) {
   const [commentState, setCommentState] = useState("");
   const mutation = api.challenges.postComment.useMutation();
@@ -17,7 +28,7 @@ export default function Modal({
 
     if (commentState) {
       mutation.mutate({
-        solutionId: solutionId,
+        solutionId: solution.id!,
         comment: commentState,
       });
     }
@@ -35,8 +46,15 @@ export default function Modal({
   }, [mutation.isError, mutation.isLoading, mutation.isSuccess]);
 
   return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-[#121212] p-6">
-      <h1>Comments</h1>
+    <div className="absolute left-1/2 top-1/2 flex max-h-[80%] w-[90%] -translate-x-1/2 -translate-y-1/2 flex-col justify-center gap-4 rounded-xl bg-[#121212] p-8 md:w-max">
+      <button
+        className="w-min items-end rounded-xl p-1 text-white"
+        onClick={() => setShowModalState(false)}
+      >
+        <CrossIcon />
+      </button>
+      <SolutionCard solution={solution} isInCommentModal={true} />
+      <h1 className="text-xl">Comments</h1>
       <form action="submit" onSubmit={onSubmit}>
         <input
           placeholder="Leave a comment"
@@ -49,13 +67,18 @@ export default function Modal({
           Comment
         </button>
       </form>
-      {comments?.map((comment) => {
-        return (
-          <div key={comment.commentId} className="border-1 w-full border-white">
-            <p>{comment.comment}</p>
-          </div>
-        );
-      })}
+      <div className="flex flex-col gap-2 overflow-auto">
+        {comments?.map((comment) => {
+          return (
+            <div
+              key={comment.commentId}
+              className="w-full rounded-lg border-2 border-solid border-white p-3"
+            >
+              <p>{comment.comment}</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

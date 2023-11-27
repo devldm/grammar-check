@@ -17,7 +17,13 @@ export default function GridWithTitle({
       <div className="flex flex-col justify-center gap-3 md:flex md:flex-row md:flex-wrap md:gap-4">
         {data
           ? data.map((solution) => {
-              return <SolutionCard solution={solution} key={solution.id} />;
+              return (
+                <SolutionCard
+                  isInCommentModal={false}
+                  solution={solution}
+                  key={solution.id}
+                />
+              );
             })
           : null}
       </div>
