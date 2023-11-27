@@ -1,10 +1,4 @@
-import {
-  type FormEvent,
-  useEffect,
-  useState,
-  type SetStateAction,
-  type Dispatch,
-} from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { type comments } from "types/grammar";
 import { api } from "~/utils/api";
 import SolutionCard from "./SolutionCard";
@@ -14,11 +8,11 @@ import CrossIcon from "./icons/CrossIcon";
 export default function Modal({
   comments,
   solution,
-  setShowModalState,
+  toggle,
 }: {
   comments: comments;
   solution: newSolutionSubmission;
-  setShowModalState: Dispatch<SetStateAction<boolean>>;
+  toggle: () => void;
 }) {
   const [commentState, setCommentState] = useState("");
   const mutation = api.challenges.postComment.useMutation();
@@ -49,7 +43,9 @@ export default function Modal({
     <div className="absolute left-1/2 top-1/2 flex max-h-[80%] w-[90%] -translate-x-1/2 -translate-y-1/2 flex-col justify-center gap-4 rounded-xl bg-[#121212] p-8 md:w-max">
       <button
         className="w-min items-end rounded-xl p-1 text-white"
-        onClick={() => setShowModalState(false)}
+        onClick={() => {
+          toggle();
+        }}
       >
         <CrossIcon />
       </button>

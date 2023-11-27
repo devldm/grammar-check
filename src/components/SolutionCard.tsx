@@ -1,7 +1,7 @@
-import { useState } from "react";
 import type { newSolutionSubmission } from "~/server/api/routers/challenges";
 import { api } from "~/utils/api";
 import Modal from "./Modal";
+import useModal from "~/hooks/useModal";
 
 export default function SolutionCard({
   solution,
@@ -10,12 +10,10 @@ export default function SolutionCard({
   solution: newSolutionSubmission;
   isInCommentModal: boolean;
 }) {
-  const [showModal, setShowModal] = useState(false);
+  const { toggleModal, showModal } = useModal();
   const comments = api.challenges.getSolutionComments.useQuery({
     id: solution.id!,
   });
-
-  console.log(comments.data);
   return (
     <div
       key={solution.id}
@@ -30,9 +28,7 @@ export default function SolutionCard({
       {!isInCommentModal && !showModal && (
         <button
           onClick={() => {
-            console.log(showModal);
-            if (showModal === false) setShowModal(true);
-            else return;
+            toggleModal();
           }}
           className="rounded-xl bg-blue-300 p-3 text-black"
         >
@@ -44,7 +40,7 @@ export default function SolutionCard({
         <Modal
           comments={comments.data!}
           solution={solution}
-          setShowModalState={setShowModal}
+          toggle={toggleModal}
         />
       )}
     </div>
