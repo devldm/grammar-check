@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import HamburgerButton from "./HamburgerButton";
+import { useSession } from "next-auth/react";
 
 type link = {
   linkText: string;
@@ -9,14 +10,19 @@ type link = {
 
 const baseLinks: link[] = [{ linkText: "Home", href: "/" }];
 
-const signedInLinks: link[] = [
-  ...baseLinks,
-  { linkText: "Profile", href: "/profile" },
-];
+
 
 export default function Nav({ isSignedIn }: { isSignedIn: boolean }) {
   const pathname = usePathname();
+  const { data: sessionData } = useSession();
+
+  const signedInLinks: link[] = [
+    ...baseLinks,
+    { linkText: "Profile", href: `/profile/${sessionData?.user.name}` },
+  ];
   const links = isSignedIn ? signedInLinks : baseLinks;
+
+  
   return (
     <nav className="border-gray-200 bg-white dark:bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">

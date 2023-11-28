@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import GridWithTitle from "~/components/GridWithTitle";
 import Nav from "~/components/Nav";
 import SignInOutButton from "~/components/SignInOutButton";
@@ -10,7 +11,9 @@ import { api } from "~/utils/api";
 export default function Profile() {
   const { data: sessionData } = useSession();
   const completedChallenges = api.challenges.getAllSubmittedByUser.useQuery();
-
+  const router = useRouter();
+  const { username } = router.query;
+  const isViewingUser = username === sessionData?.user?.name;
   return (
     <>
       <Head>
@@ -23,9 +26,11 @@ export default function Profile() {
         <div className="max-w-max">
           <div className="flex flex-row items-center">
             <UserDataCard data={sessionData} />
-            <div className="shrink-0">
-              <SignInOutButton data={sessionData} />
-            </div>
+            {isViewingUser && (
+              <div className="shrink-0">
+                <SignInOutButton data={sessionData} />
+              </div>
+            )}
           </div>
           <Spacer height="h-8" />
           {completedChallenges.data && (
